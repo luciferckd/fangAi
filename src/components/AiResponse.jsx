@@ -36,7 +36,7 @@ import { IconBtn } from './button';
 import { iconLogo } from '../assets/assets';
 
 const AiResponse = ({ aiResponse, children }) => {
-  // Initialize the codeTheme state to an empty string, this will be used to store the selected code theme
+  // Initialize the codeTheme state to an empty string, this will be used to store the selected code theme using the function
   const [codeTheme, setCodeTheme] = useState('');
 
   const { showSnackbar, hideSnackbar} = useSnackbar();
