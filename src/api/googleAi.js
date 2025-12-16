@@ -53,7 +53,7 @@ const getAiResponse = async (userPrompt, chats = []) => {
 
     return result.response.text();
   } catch (err) {
-    console.log(`Error generating AI response: ${err.message}`);
+    console.log(`Error generating AI responses: ${err.message}`);
   }
 };
 
