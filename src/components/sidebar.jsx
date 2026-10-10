@@ -57,7 +57,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
             disabled={!conversationId}
           />
 
-          <div className='overflow-y-auto -me-2 pe-1'>
+          <div className='overflow-y-auto -me-2 pe-1 min-h-0'>
             <p className='text-titleSmall h-9 grid items-center px-4'>Recent</p>
 
             <nav>
@@ -73,7 +73,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
                     onClick={toggleSidebar}
                   >
                     <span className='material-symbols-rounded icon-small'>
-                      chat_bubbl
+                      chat_bubble
                     </span>
                     <span className='truncate'>{item.title}</span>
                     <div className='state-layer'></div>

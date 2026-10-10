@@ -84,7 +84,7 @@ const App = () => {
       {/* Meta title */}
       <PageTitle title='FangAI- chat to supercharge your ideas' />
 
-      <div className='lg:grid lg:grid-cols-[320px,1fr]'>
+      <div className='lg:grid lg:grid-cols-[320px,1fr] h-dvh overflow-hidden'>
         {/* Sidebar */}
         <Sidebar 
         isSidebarOpen={isSidebarOpen}
@@ -93,7 +93,7 @@ const App = () => {
 
         
 
-        <div className='h-dvd grid grid-rows-[max-content,minmax(0,1fr),max-content]'>
+        <div className='h-dvh grid grid-rows-[max-content,minmax(0,1fr),max-content] overflow-hidden'>
           {/* Top app bar */}
           <TopAppBar toggleSidebar={toggleSidebar} />
 

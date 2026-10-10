@@ -36,24 +36,28 @@ const conversationAction = async ({ request, params }) => {
     let aiResponse = '';
 
     try {
-        const { chats } = await databases.getDocument(
+        const doc = await databases.getDocument(
             import.meta.env.VITE_APPWRITE_DATABASE_ID,
-            'Conversation',
+            'conversation',
             conversationId
         );
-        chatHistory = chats.map(({ user_prompt, ai_response }) => {
+        chatHistory = (doc?.chats || []).map(({ user_prompt, ai_response }) => {
             return { user_prompt, ai_response };
         });     
         
     } catch (err) {
-        console.log(`Error fetching conversation: ${err.message}`);
+        console.warn(`[FangAI] Error fetching conversation history: ${err.message}`);
     }
 
     try {
         aiResponse = await getAiResponse(userPrompt, chatHistory);
-
     } catch (err) {
-        console.log(`Error fetching conversation: ${err.message}`);
+        console.error(`[FangAI] Error getting AI response: ${err.message}`);
+        aiResponse = `⚠️ **Error generating AI response**: ${err.message}`;
+    }
+
+    if (!aiResponse) {
+        aiResponse = "I'm sorry, I couldn't generate a response at this time. Please check your Gemini API key in `.env`.";
     }
 
     try {
@@ -66,12 +70,10 @@ const conversationAction = async ({ request, params }) => {
                 ai_response: aiResponse,
                 conversation: conversationId
             }
-        )
+        );
     } catch(err) {
-        console.log(`Error Storing chat: ${err.message}`);
+        console.error(`[FangAI] Error storing chat: ${err.message}`);
     }
-    
-
 
     return null;
 }

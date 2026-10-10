@@ -38,88 +38,158 @@ import MenuItem from './menuItem';
 import { LinearProgress } from './progress';
 import Logo from './logo';
 
+import { useState } from 'react';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { getApiKey } from '../lib/googleAi';
+
 const TopAppBar = ({ toggleSidebar }) => {
   const navigation = useNavigation();
-
-  // usenavigate: Function for programmatically navigating between routes
   const navigate = useNavigate();
-
-  /**
-   * - converstions: Array containing all conversations data.
-   * -user: User data for the currently logged-in user
-   */
-
   const { conversation, user } = useLoaderData();
-
-  // useParams: Function to access URL parameters
   const params = useParams();
-
-  /**
-   * Obtain the useSubmit hook for handling form submissions:
-   * - submit: Function to submit a form programmatically
-   * - formData: Form data associated with the current navigation
-   */
   const submit = useSubmit();
-
-  /**
-   * use a custom hooks to toggle the menu show state
-   * 'showMenu' is the current state of the menu
-   * and 'setShowMenu' is the function to set toggle the sidebar
-   */
   const [showMenu, setShowMenu] = useToggle();
+  const { showSnackbar } = useSnackbar();
+
+  // API Key modal state
+  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState(() => getApiKey() || '');
+
+  const handleSaveApiKey = (e) => {
+    e.preventDefault();
+    const trimmed = apiKeyInput.trim();
+    if (trimmed) {
+      localStorage.setItem('gemini_api_key', trimmed);
+      showSnackbar({
+        message: 'Gemini API key saved successfully!',
+        type: 'info',
+        timeOut: 3000,
+      });
+    } else {
+      localStorage.removeItem('gemini_api_key');
+      showSnackbar({
+        message: 'Custom API key cleared. Using default configuration.',
+        type: 'info',
+        timeOut: 3000,
+      });
+    }
+    setIsKeyModalOpen(false);
+  };
 
   const isNormalLoad = navigation.state === 'loading' && !navigation.formData;
 
   return (
-    <header className='relative flex justify-between items-center h-16 px-4'>
-      <div className='flex items-center gap-1'>
-        <IconBtn
-          icon='menu'
-          title='Menu'
-          className='lg:hidden'
-          onClick={toggleSidebar}
-        />
-
-        <Logo classes='lg:hidden' />
-      </div>
-
-      {params.conversationId && (
-        <IconBtn
-          icon='delete'
-          classes='ms-auto me-1 lg:hidden'
-          onClick={() => {
-            // Find the curent conversation title
-             const title = conversation?.document?.find(({ $id }) => params.conversationId === $id)?.title || 'Conversation Deleted';
-
-            // Call the deleteConversation function
-            deleteConversation({
-              id: params.conversationId,
-              title,
-              submit
-            })
-          }}
-        />
-      )}
-
-      <div className='menu-wrapper'>
-        <IconBtn onClick={setShowMenu}>
-          <Avatar name={user.name} />
-        </IconBtn>
-
-        <Menu classes={showMenu ? 'active' : ''}>
-          <MenuItem
-            labelText='Logout'
-            onClick={() => logout(navigate)}
+    <>
+      <header className='relative flex justify-between items-center h-16 px-4'>
+        <div className='flex items-center gap-1'>
+          <IconBtn
+            icon='menu'
+            title='Menu'
+            className='lg:hidden'
+            onClick={toggleSidebar}
           />
-        </Menu>
-      </div>
 
-      <AnimatePresence>
-        {isNormalLoad && (
-          <LinearProgress classes='absolute top-0 left-0 right-0' />
+          <Logo classes='lg:hidden' />
+        </div>
+
+        {params.conversationId && (
+          <IconBtn
+            icon='delete'
+            classes='ms-auto me-1 lg:hidden'
+            onClick={() => {
+              const title =
+                conversation?.document?.find(({ $id }) => params.conversationId === $id)
+                  ?.title || 'Conversation Deleted';
+
+              deleteConversation({
+                id: params.conversationId,
+                title,
+                submit,
+              });
+            }}
+          />
         )}
-      </AnimatePresence>
-    </header>
+
+        <div className='menu-wrapper'>
+          <IconBtn onClick={setShowMenu}>
+            <Avatar name={user.name} />
+          </IconBtn>
+
+          <Menu classes={showMenu ? 'active' : ''}>
+            <MenuItem
+              labelText='Gemini API Key'
+              onClick={() => {
+                setShowMenu();
+                setApiKeyInput(getApiKey() || '');
+                setIsKeyModalOpen(true);
+              }}
+            />
+            <MenuItem
+              labelText='Logout'
+              onClick={() => logout(navigate)}
+            />
+          </Menu>
+        </div>
+
+        <AnimatePresence>
+          {isNormalLoad && (
+            <LinearProgress classes='absolute top-0 left-0 right-0' />
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* API Key Modal */}
+      {isKeyModalOpen && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm'>
+          <div className='w-full max-w-md p-6 rounded-2xl bg-light-surfaceContainerLow dark:bg-dark-surfaceContainerLow border border-light-outlineVariant/30 dark:border-dark-outlineVariant/30 shadow-2xl'>
+            <h3 className='text-titleLarge font-semibold text-light-onSurface dark:text-dark-onSurface mb-2'>
+              Gemini API Key
+            </h3>
+            <p className='text-bodyMedium text-light-onSurfaceVariant dark:text-dark-onSurfaceVariant mb-4 leading-relaxed'>
+              Enter your Gemini API key from Google AI Studio. Your key is stored securely in your browser's local storage.
+            </p>
+
+            <form onSubmit={handleSaveApiKey} className='space-y-4'>
+              <input
+                type='password'
+                value={apiKeyInput}
+                onChange={(e) => setApiKeyInput(e.target.value)}
+                placeholder='AIzaSy...'
+                className='w-full px-4 py-3 rounded-xl border border-light-outline/40 dark:border-dark-outline/40 bg-light-background dark:bg-dark-background text-light-onBackground dark:text-dark-onBackground focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono text-sm'
+                autoFocus
+              />
+
+              <div className='flex items-center justify-between pt-2'>
+                <a
+                  href='https://aistudio.google.com/app/apikey'
+                  target='_blank'
+                  rel='noreferrer'
+                  className='text-labelMedium text-teal-600 dark:text-teal-400 hover:underline'
+                >
+                  Get free API key ↗
+                </a>
+
+                <div className='flex gap-2'>
+                  <button
+                    type='button'
+                    onClick={() => setIsKeyModalOpen(false)}
+                    className='px-4 py-2 rounded-xl text-labelLarge font-medium text-light-onSurfaceVariant dark:text-dark-onSurfaceVariant hover:bg-light-surfaceContainerHigh dark:hover:bg-dark-surfaceContainerHigh transition'
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type='submit'
+                    className='px-5 py-2 rounded-xl text-labelLarge font-medium bg-teal-500 hover:bg-teal-400 text-slate-950 transition'
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

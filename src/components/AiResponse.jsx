@@ -127,8 +127,8 @@ const AiResponse = ({ aiResponse, children }) => {
   };
 
   return (
-    <div className='grid grid-cols-1 items-start gap-1 py-4 md:grid-cols-[max-content,minmax(0,1fr)] md:gap-5'>
-      <figure className='w-8 h-8 grid place-items-center'>
+    <div className='flex justify-start items-start gap-3 py-4 md:gap-4'>
+      <figure className='w-8 h-8 shrink-0 grid place-items-center mt-1'>
         <img
           src={iconLogo}
           width={32}
@@ -137,19 +137,24 @@ const AiResponse = ({ aiResponse, children }) => {
         />
       </figure>
 
-      {children}
+      <div className='grow min-w-0'>
+        {children}
 
-      {aiResponse && (
-         <div className='markdown-content'>
-        <Markdown
-          remarkPlugins={[remarkGfm]}
-          components={{ code }}
-        >
-          {aiResponse}
-        </Markdown>
+        {aiResponse ? (
+          <div className='markdown-content'>
+            <Markdown
+              remarkPlugins={[remarkGfm]}
+              components={{ code }}
+            >
+              {aiResponse}
+            </Markdown>
+          </div>
+        ) : !children ? (
+          <div className='text-bodyMedium text-light-error dark:text-dark-error py-2'>
+            ⚠️ No response received. Please check your Gemini API connection.
+          </div>
+        ) : null}
       </div>
-      )}
-     
     </div>
   );
 };

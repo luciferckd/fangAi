@@ -49,25 +49,32 @@ const UserPrompt = ({ text }) => {
 
   
   return (
-    <div className='grid grid-cols-1 items-start gap-1 py-4 md:grid-cols-[max-content,minmax(0,1fr),max-content] md:gap-5'>
+    <div className='flex justify-end items-start gap-3 py-4'>
+      <div className='flex flex-col items-end max-w-[85%] md:max-w-[75%]'>
+        <div className='bg-light-surfaceContainerHigh dark:bg-dark-surfaceContainerHigh text-light-onSurface dark:text-dark-onSurface px-4 py-3 rounded-2xl rounded-tr-extraSmall shadow-sm'>
+          <p
+            className={`text-bodyLarge whitespace-pre-wrap ${
+              !isExpanded ? 'line-clamp-4' : ''
+            }`}
+            ref={textBoxRef}
+          >
+            {text}
+          </p>
+        </div>
+
+        {hasMoreContent && (
+          <div className='mt-1'>
+            <IconBtn
+              icon={isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
+              onClick={toggleExpand}
+              title={isExpanded ? 'Collapse text' : 'Expand text'}
+              size='small'
+            />
+          </div>
+        )}
+      </div>
+
       <Avatar name={user?.name} />
-
-      <p
-        className={`text-bodyLarge pt-1 whitespace-pre-wrap 
-          ${!isExpanded ? 'line-clamp-4' : ''} `}
-        ref={textBoxRef}
-      >
-        {text}
-      </p>
-
-      {hasMoreContent && (
-         <IconBtn
-        icon={isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-        onClick={toggleExpand}
-        title={isExpanded ? 'Collapse text' : 'Expand text'}
-      />
-      )}
-     
     </div>
   );
 };

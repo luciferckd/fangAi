@@ -438,7 +438,9 @@
     sm:max-w-[320px]
 
      /* responsive for large screen */
-    lg:static
+    lg:sticky
+    lg:top-0
+    lg:h-dvh
     lg:opacity-100
     lg:visible
     lg:w-full
@@ -458,7 +460,7 @@
     .sidebar-inner {
       @apply h-full
       grid
-      grid-rows-[max-content,max-content,1fr,max-content]
+      grid-rows-[max-content,max-content,minmax(0,1fr),max-content]
       grid-cols-1
       px-3
       opacity-0
