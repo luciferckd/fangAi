@@ -16,7 +16,7 @@ import { motion } from 'framer-motion';
 import { useRef, useCallback, useState } from 'react';
 import { useNavigation, useSubmit, useParams } from 'react-router-dom';
 
-const promptField = () => {
+const PromptField = () => {
   // 'inputfield' and 'inputfieldcontainter' hold references to their DOM elements
   const inputField = useRef();
   const inputFieldContainer = useRef();
@@ -155,4 +155,4 @@ const promptField = () => {
   );
 };
 
-export default promptField;
+export default PromptField;

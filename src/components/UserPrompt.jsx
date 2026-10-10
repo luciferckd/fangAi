@@ -9,7 +9,7 @@
  */
 import PropTypes from 'prop-types';
 import { useLoaderData } from 'react-router-dom';
-import { useRef, useState, useEffect, use } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 /**
  * Custom modules
@@ -72,7 +72,7 @@ const UserPrompt = ({ text }) => {
   );
 };
 
-UserPrompt.PropTypes = {
+UserPrompt.propTypes = {
   text: PropTypes.string,
 };
 

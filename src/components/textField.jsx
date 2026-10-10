@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 
-const textField = ({
+const TextField = ({
   classes = '',
   helperText,
   label,
@@ -43,7 +43,7 @@ const textField = ({
   );
 };
 
-textField.prototype = {
+TextField.propTypes = {
     classes: PropTypes.string,
     helperText: PropTypes.string,
     label: PropTypes.string,
@@ -52,7 +52,7 @@ textField.prototype = {
     fieldClasses: PropTypes.string,
 }
 
-export default textField;
+export default TextField;
 
 
 

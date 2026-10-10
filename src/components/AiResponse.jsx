@@ -127,7 +127,7 @@ const AiResponse = ({ aiResponse, children }) => {
   };
 
   return (
-    <div className='grid grid-cols-1 items--start gap-1 py-4 md:grid-cols-[max-content,minmax(0,1fr)] md:gap-5'>
+    <div className='grid grid-cols-1 items-start gap-1 py-4 md:grid-cols-[max-content,minmax(0,1fr)] md:gap-5'>
       <figure className='w-8 h-8 grid place-items-center'>
         <img
           src={iconLogo}

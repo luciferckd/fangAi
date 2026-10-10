@@ -26,7 +26,6 @@ import TopAppBar from './components/topAppBar';
 import Sidebar from './components/sidebar';
 import Greetings from './pages/Greetings';
 import PromptField from './components/promptField';
-import { use } from 'react';
 
 const App = () => {
   // Get the URL parameters

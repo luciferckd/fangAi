@@ -23,7 +23,7 @@ import Logo from './logo';
 import { ExtendedFab } from './button';
 import { IconBtn } from './button';
 
-const sidebar = ({ isSidebarOpen, toggleSidebar }) => {
+const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   // Extract conversations from loader data if it exists.
   const {
     conversation: { documents: conversationData } = { documents: [] },
@@ -113,9 +113,9 @@ const sidebar = ({ isSidebarOpen, toggleSidebar }) => {
   );
 };
 
-sidebar.propTypes = {
+Sidebar.propTypes = {
   isSidebarOpen: PropTypes.bool,
   toggleSidebar: PropTypes.func,
 };
 
-export default sidebar;
+export default Sidebar;

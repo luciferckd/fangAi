@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
  */
 import { logoLight, logoDark } from "../assets/assets";
 
-const logo = ({ classes = ''}) => {
+const Logo = ({ classes = ''}) => {
   return (
     <Link
               to='/'
@@ -40,8 +40,8 @@ const logo = ({ classes = ''}) => {
   )
 }
 
-logo.propTypes = {
+Logo.propTypes = {
   classes: PropTypes.string,
 }
 
-export default logo
+export default Logo

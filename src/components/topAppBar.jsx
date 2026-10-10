@@ -38,7 +38,7 @@ import MenuItem from './menuItem';
 import { LinearProgress } from './progress';
 import Logo from './logo';
 
-const topAppBar = ({ toggleSidebar }) => {
+const TopAppBar = ({ toggleSidebar }) => {
   const navigation = useNavigation();
 
   // usenavigate: Function for programmatically navigating between routes
@@ -123,8 +123,8 @@ const topAppBar = ({ toggleSidebar }) => {
   );
 };
 
-topAppBar.PropTypes = {
+TopAppBar.propTypes = {
   toggleSidebar: PropTypes.func,
 };
 
-export default topAppBar;
+export default TopAppBar;

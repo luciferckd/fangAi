@@ -9,7 +9,7 @@
  */
 import PropTypes from 'prop-types';
 
-const menuItem = ({ classes = '', labelText, ...rest }) => {
+const MenuItem = ({ classes = '', labelText, ...rest }) => {
   return (
     <button className={`menu-item ${classes}`}
      {...rest}
@@ -21,9 +21,9 @@ const menuItem = ({ classes = '', labelText, ...rest }) => {
   )
 }
 
-menuItem.propTypes = {
+MenuItem.propTypes = {
   classes: PropTypes.string,
   labelText: PropTypes.string,
 };
 
-export default menuItem
+export default MenuItem

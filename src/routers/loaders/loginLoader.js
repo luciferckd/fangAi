@@ -15,7 +15,7 @@ import { redirect } from 'react-router-dom';
  */
 import { account } from '../../lib/appwrite';
 
-const loginLoader = async ({ request }) => {
+const loginLoader = async () => {
   try {
     await account.get();
   } catch (error) {

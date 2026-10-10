@@ -25,7 +25,7 @@ const RootError = () => {
   return (
     <>
       <div className='h-dvh grid grid-cols-1 justify-items-center content-center text-center px-4'>
-        <p className='text-displayLarge'>{error.status}</p>
+        <p className='text-displayLarge'>{status}</p>
         <p className='text-light-onSurfaceVariant dark:text-dark-onSurfaceVariant mt-1 mb-4'>
           {message}
         </p>

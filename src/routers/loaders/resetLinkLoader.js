@@ -15,7 +15,7 @@ import { redirect } from 'react-router-dom';
  */
 import { account } from '../../lib/appwrite';
 
-const resetLinkLoader = async ({ request }) => {
+const resetLinkLoader = async () => {
   try {
     await account.get();
   } catch (error) {

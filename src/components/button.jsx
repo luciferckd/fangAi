@@ -43,16 +43,16 @@ Button.propTypes = {
  *  Icon button
  */
 
-const IconBtn = ({ classes = '', icon, size = '', childern, ...rest }) => {
+const IconBtn = ({ classes = '', icon, size = '', children, ...rest }) => {
   return (
     <motion.button
       className={`icon-btn ${size} ${classes}`}
       {...rest}
     >
 
-      {childern}
+      {children}
 
-      {!childern && (
+      {!children && (
         <span className='material-symbols-rounded icon'>{icon}</span>
       )}
 
@@ -65,7 +65,7 @@ IconBtn.propTypes = {
   classes: PropTypes.string,
   icon: PropTypes.string,
   size: PropTypes.string,
-  childern: PropTypes.any,
+  children: PropTypes.any,
 }
 
 /**

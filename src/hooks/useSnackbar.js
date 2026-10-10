@@ -10,7 +10,7 @@
  * Node modules
  */
 
-import { use, useContext } from 'react';
+import { useContext } from 'react';
 
 
 /**
