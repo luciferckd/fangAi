@@ -12,6 +12,7 @@ import { usePromptPreloader } from '../hooks/userPromptPreloader';
 /**
  * Node modules
  */
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useLoaderData, useLocation } from 'react-router-dom';
 
@@ -25,8 +26,24 @@ import PromptPreloader from '../components/PromptPreloader';
 
 const Conversation = () => {
   const {
-    conversation: { title, chats },
+    conversation: { title, chats = [] } = {},
   } = useLoaderData() || {};
+
+  // Track initial chats so only newly arrived responses stream word-by-word
+  const initialChatIds = useRef(null);
+  if (!initialChatIds.current) {
+    const latestChat = chats[chats.length - 1];
+    const isBrandNew =
+      latestChat &&
+      latestChat.$createdAt &&
+      Date.now() - new Date(latestChat.$createdAt).getTime() < 25000;
+
+    initialChatIds.current = new Set(
+      isBrandNew
+        ? chats.slice(0, -1).map((c) => c.$id)
+        : chats.map((c) => c.$id)
+    );
+  }
 
   // Retrieve the user prompt preloader value using the custom hooks 
 
@@ -46,15 +63,27 @@ const Conversation = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2, delay: 0.05, ease: 'easeOut' }}
       >
-        {chats.map((chat) => (
-          <div key={chat.$id}>
-            {/* UserPrompt */}
-            <UserPrompt text={chat.user_prompt} />
+        {chats.map((chat, index) => {
+          const isLatest = index === chats.length - 1;
+          const shouldAnimate = isLatest && !initialChatIds.current.has(chat.$id);
 
-            {/* AiResponse */}
-            <AiResponse aiResponse={chat.ai_response} />
-          </div>
-        ))}
+          if (shouldAnimate) {
+            initialChatIds.current.add(chat.$id);
+          }
+
+          return (
+            <div key={chat.$id}>
+              {/* UserPrompt */}
+              <UserPrompt text={chat.user_prompt} />
+
+              {/* AiResponse */}
+              <AiResponse
+                aiResponse={chat.ai_response}
+                animate={shouldAnimate}
+              />
+            </div>
+          );
+        })}
       </motion.div>
 
       {/* Preloader */}

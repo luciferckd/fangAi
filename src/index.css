@@ -368,18 +368,22 @@
   }
 
   .menu {
-    @apply bg-light-surfaceContainer
-    dark:bg-dark-surfaceContainer
+    @apply bg-light-surfaceContainerHigh
+    dark:bg-dark-surfaceContainerHigh
+    border
+    border-light-outlineVariant/30
+    dark:border-dark-outlineVariant/30
     absolute
-    top-[calc(100%+4px)]
+    top-[calc(100%+8px)]
     right-0
-    min-w-[112px]
+    min-w-[220px]
+    w-max
     max-w-[280px]
-    py-2
-    rounded-extraSmall
-    shadow-elevation2
-    z-20
-    origin-top
+    p-1.5
+    rounded-medium
+    shadow-elevation3
+    z-30
+    origin-top-right
     scale-75
     opacity-0
     invisible
@@ -399,11 +403,15 @@
     @apply text-light-onSurface
     dark:text-dark-onSurface
     text-labelLarge
-    h-12
+    h-11
     w-full
     flex
     items-center
+    gap-3
     px-3
+    rounded-small
+    whitespace-nowrap
+    transition-colors;
   }
 
   @media (prefers-color-scheme: dark) {

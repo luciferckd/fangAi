@@ -9,20 +9,28 @@
  */
 import PropTypes from 'prop-types';
 
-const MenuItem = ({ classes = '', labelText, ...rest }) => {
+const MenuItem = ({ classes = '', icon, labelText, ...rest }) => {
   return (
-    <button className={`menu-item ${classes}`}
-     {...rest}
+    <button
+      className={`menu-item ${classes}`}
+      {...rest}
     >
-        <span>{labelText}</span>
+      {icon && (
+        <span className='material-symbols-rounded icon-small shrink-0'>
+          {icon}
+        </span>
+      )}
 
-        <div className="state-layer"></div>
+      <span className='truncate text-left grow'>{labelText}</span>
+
+      <div className='state-layer'></div>
     </button>
-  )
-}
+  );
+};
 
 MenuItem.propTypes = {
   classes: PropTypes.string,
+  icon: PropTypes.string,
   labelText: PropTypes.string,
 };
 

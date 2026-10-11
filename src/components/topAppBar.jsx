@@ -110,13 +110,39 @@ const TopAppBar = ({ toggleSidebar }) => {
           />
         )}
 
-        <div className='menu-wrapper'>
-          <IconBtn onClick={setShowMenu}>
+        <div className='menu-wrapper relative'>
+          <IconBtn
+            onClick={setShowMenu}
+            title='Account menu'
+            classes='shrink-0'
+          >
             <Avatar name={user.name} />
           </IconBtn>
 
+          {/* Backdrop to close menu when clicking outside */}
+          {showMenu && (
+            <div
+              className='fixed inset-0 z-20'
+              onClick={setShowMenu}
+            />
+          )}
+
           <Menu classes={showMenu ? 'active' : ''}>
+            {/* User Profile ID Info Header */}
+            <div className='flex items-center gap-2.5 px-3 py-2.5 mb-1 border-b border-light-outlineVariant/20 dark:border-dark-outlineVariant/20'>
+              <Avatar name={user.name} />
+              <div className='min-w-0 flex-1'>
+                <p className='text-labelLarge font-semibold text-light-onSurface dark:text-dark-onSurface truncate'>
+                  {user.name}
+                </p>
+                <p className='text-bodySmall text-light-onSurfaceVariant dark:text-dark-onSurfaceVariant truncate'>
+                  {user.email || 'FangAI User'}
+                </p>
+              </div>
+            </div>
+
             <MenuItem
+              icon='vpn_key'
               labelText='Gemini API Key'
               onClick={() => {
                 setShowMenu();
@@ -124,8 +150,11 @@ const TopAppBar = ({ toggleSidebar }) => {
                 setIsKeyModalOpen(true);
               }}
             />
+
             <MenuItem
+              icon='logout'
               labelText='Logout'
+              classes='text-light-error dark:text-dark-error'
               onClick={() => logout(navigate)}
             />
           </Menu>

@@ -35,11 +35,49 @@ import { IconBtn } from './button';
  */
 import { iconLogo } from '../assets/assets';
 
-const AiResponse = ({ aiResponse, children }) => {
+const AiResponse = ({ aiResponse, children, animate = false }) => {
   // Initialize the codeTheme state to an empty string, this will be used to store the selected code theme using the function
   const [codeTheme, setCodeTheme] = useState('');
+  const [displayedText, setDisplayedText] = useState(() => (animate ? '' : aiResponse));
+  const [isTyping, setIsTyping] = useState(() => Boolean(animate && aiResponse));
 
   const { showSnackbar, hideSnackbar} = useSnackbar();
+
+  // Word-by-word typewriter streaming effect
+  useEffect(() => {
+    if (!animate || !aiResponse) {
+      setDisplayedText(aiResponse);
+      setIsTyping(false);
+      return;
+    }
+
+    const tokens = aiResponse.split(/(\s+)/);
+    let index = 0;
+    setIsTyping(true);
+
+    const interval = setInterval(() => {
+      index += 2;
+      if (index >= tokens.length) {
+        setDisplayedText(aiResponse);
+        setIsTyping(false);
+        clearInterval(interval);
+      } else {
+        setDisplayedText(tokens.slice(0, index).join(''));
+      }
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, [aiResponse, animate]);
+
+  // Auto-scroll chat history down during word-by-word typing
+  useEffect(() => {
+    if (isTyping) {
+      const scrollContainer = document.querySelector('.overflow-y-auto');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
+  }, [displayedText, isTyping]);
 
   // useEffect to set the codeTheme based on the user's system preference color scheme
   useEffect(() => {
@@ -141,13 +179,24 @@ const AiResponse = ({ aiResponse, children }) => {
         {children}
 
         {aiResponse ? (
-          <div className='markdown-content'>
+          <div
+            className='markdown-content'
+            onClick={() => {
+              if (isTyping) {
+                setDisplayedText(aiResponse);
+                setIsTyping(false);
+              }
+            }}
+          >
             <Markdown
               remarkPlugins={[remarkGfm]}
               components={{ code }}
             >
-              {aiResponse}
+              {displayedText || ''}
             </Markdown>
+            {isTyping && (
+              <span className='inline-block w-1.5 h-4 ml-1 bg-light-primary dark:bg-dark-primary animate-pulse align-middle' />
+            )}
           </div>
         ) : !children ? (
           <div className='text-bodyMedium text-light-error dark:text-dark-error py-2'>
@@ -162,6 +211,7 @@ const AiResponse = ({ aiResponse, children }) => {
 AiResponse.propTypes = {
   aiResponse: PropTypes.string,
   children: PropTypes.any,
+  animate: PropTypes.bool,
 };
 
 export default AiResponse;
