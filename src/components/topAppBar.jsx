@@ -32,7 +32,7 @@ import { useToggle } from '../hooks/useToggle';
  * Components
  */
 import { IconBtn } from './button';
-import Avatar from './avatar';
+import Avatar from './Avatar';
 import Menu from './Menu';
 import MenuItem from './menuItem';
 import { LinearProgress } from './progress';

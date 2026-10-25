@@ -19,7 +19,7 @@ import { useToggle } from '../hooks/useToggle';
 /**
  * Components
  */
-import Avatar from './avatar';
+import Avatar from './Avatar';
 import { IconBtn } from './button';
 
 
